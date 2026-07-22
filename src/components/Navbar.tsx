@@ -11,7 +11,9 @@ export default function Navbar() {
     <header className="sticky top-0 z-10 border-b border-line bg-paper/95 backdrop-blur">
       <div className="mx-auto flex max-w-2xl items-center justify-between border-x border-line px-4 py-3">
         <Link href="/" className="flex items-baseline gap-2">
-          <span className="font-display text-2xl font-semibold tracking-tight text-ink">Dispatch</span>
+          <span className="font-display text-2xl font-semibold tracking-tight text-ink">
+            Dispatch
+          </span>
           <span className="hidden font-mono text-[10px] uppercase tracking-widest text-muted sm:inline">
             the wire
           </span>
@@ -23,7 +25,7 @@ export default function Navbar() {
             aria-label="Search"
             className="font-mono text-sm text-muted hover:text-wire"
           >
-            🔍
+            Search
           </Link>
 
           {status === "authenticated" && session?.user ? (
@@ -33,7 +35,9 @@ export default function Navbar() {
                 className="flex items-center gap-2 text-sm font-medium text-ink hover:text-wire"
               >
                 <Avatar seed={session.user.username} size={28} />
-                <span className="hidden sm:inline">@{session.user.username}</span>
+                <span className="hidden sm:inline">
+                  @{session.user.username}
+                </span>
               </Link>
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
@@ -46,7 +50,10 @@ export default function Navbar() {
             <div className="h-8 w-20" />
           ) : (
             <>
-              <Link href="/login" className="text-sm font-medium text-ink hover:text-wire">
+              <Link
+                href="/login"
+                className="text-sm font-medium text-ink hover:text-wire"
+              >
                 Sign in
               </Link>
               <Link href="/register" className="btn-primary">
