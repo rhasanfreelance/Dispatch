@@ -18,6 +18,14 @@ export default function Navbar() {
         </Link>
 
         <nav className="flex items-center gap-4">
+          <Link
+            href="/search"
+            aria-label="Search"
+            className="font-mono text-sm text-muted hover:text-wire"
+          >
+            🔍
+          </Link>
+
           {status === "authenticated" && session?.user ? (
             <>
               <Link

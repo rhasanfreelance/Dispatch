@@ -7,9 +7,23 @@ A minimal Twitter-style app: post short dispatches, like them, follow other acco
 - Email/username + password auth (NextAuth credentials provider, bcrypt-hashed passwords)
 - Post dispatches (280 char limit), delete your own
 - Like / unlike
+- Comment on dispatches, with a dedicated thread view, delete your own replies
 - Follow / unfollow
+- Search for people by name or username
+- Edit your display name and bio
 - Public profiles with dispatch history, follower/following counts
-- "Everyone" and "Following" feed tabs
+- "For You" (algorithmic ranking) and "Following" (chronological) feed tabs
+
+## The feed algorithm
+
+The "For You" tab ranks the most recent pool of dispatches by a score combining:
+
+- **Engagement** — likes and comments, weighted (comments count more than likes) and log-scaled so a handful of viral posts don't drown out everything else
+- **Time decay** — a Reddit/Hacker-News-style gravity curve, so older posts fade even if they were popular
+- **Affinity** — a multiplier for accounts you follow, so you still see people you care about even if their post isn't a viral hit
+- **Freshness window** — a short-lived boost for posts in their first 20 minutes, so new dispatches get initial visibility instead of being buried under old high-engagement ones
+
+The "Following" tab stays strictly chronological, matching how Twitter/X splits its two feeds. The scoring logic lives in `src/lib/ranking.ts` if you want to tune the weights.
 
 ## Local setup
 

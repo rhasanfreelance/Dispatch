@@ -13,7 +13,7 @@ export async function GET(_req: NextRequest, { params }: { params: { username: s
         orderBy: { createdAt: "desc" },
         include: {
           likes: session?.user?.id ? { where: { userId: session.user.id } } : false,
-          _count: { select: { likes: true } },
+          _count: { select: { likes: true, comments: true } },
         },
       },
       _count: { select: { followers: true, following: true, tweets: true } },
@@ -50,9 +50,50 @@ export async function GET(_req: NextRequest, { params }: { params: { username: s
       createdAt: t.createdAt,
       author: { username: user.username, displayName: user.displayName, avatarSeed: user.avatarSeed },
       likeCount: t._count.likes,
+      commentCount: t._count.comments,
       likedByMe: session?.user?.id ? t.likes.length > 0 : false,
     })),
   };
 
   return NextResponse.json({ user: shaped });
+}
+
+export async function PATCH(req: NextRequest, { params }: { params: { username: string } }) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Sign in required." }, { status: 401 });
+  }
+
+  const target = await prisma.user.findUnique({ where: { username: params.username.toLowerCase() } });
+  if (!target) {
+    return NextResponse.json({ error: "This account doesn't exist." }, { status: 404 });
+  }
+
+  if (target.id !== session.user.id) {
+    return NextResponse.json({ error: "You can only edit your own profile." }, { status: 403 });
+  }
+
+  const body = await req.json();
+  const displayName = String(body?.displayName ?? "").trim();
+  const bio = String(body?.bio ?? "").trim();
+
+  if (!displayName) {
+    return NextResponse.json({ error: "Display name can't be empty." }, { status: 400 });
+  }
+
+  if (displayName.length > 50) {
+    return NextResponse.json({ error: "Display name is capped at 50 characters." }, { status: 400 });
+  }
+
+  if (bio.length > 160) {
+    return NextResponse.json({ error: "Bio is capped at 160 characters." }, { status: 400 });
+  }
+
+  const updated = await prisma.user.update({
+    where: { id: session.user.id },
+    data: { displayName, bio },
+    select: { username: true, displayName: true, bio: true },
+  });
+
+  return NextResponse.json({ user: updated });
 }

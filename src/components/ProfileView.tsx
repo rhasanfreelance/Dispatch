@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import Avatar from "./Avatar";
 import FollowButton from "./FollowButton";
 import TweetCard, { TweetData } from "./TweetCard";
@@ -45,7 +46,11 @@ export default function ProfileView({ user }: { user: ProfileData }) {
             </div>
           </div>
 
-          {!user.isSelf && (
+          {user.isSelf ? (
+            <Link href="/settings/profile" className="btn-secondary">
+              Edit profile
+            </Link>
+          ) : (
             <FollowButton
               username={user.username}
               initialFollowed={user.isFollowedByMe}

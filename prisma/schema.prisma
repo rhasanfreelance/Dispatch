@@ -19,6 +19,7 @@ model User {
 
   tweets         Tweet[]
   likes          Like[]
+  comments       Comment[]
 
   following      Follow[] @relation("Follower")
   followers      Follow[] @relation("Following")
@@ -33,9 +34,25 @@ model Tweet {
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   likes     Like[]
+  comments  Comment[]
 
   @@index([authorId])
   @@index([createdAt])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  tweetId   String
+  tweet     Tweet    @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+
+  @@index([tweetId])
+  @@index([authorId])
 }
 
 model Like {

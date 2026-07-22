@@ -12,15 +12,18 @@ export type TweetData = {
   createdAt: string;
   author: { username: string; displayName: string; avatarSeed: string };
   likeCount: number;
+  commentCount: number;
   likedByMe: boolean;
 };
 
 export default function TweetCard({
   tweet,
   onDeleted,
+  linkToDetail = true,
 }: {
   tweet: TweetData;
   onDeleted?: (id: string) => void;
+  linkToDetail?: boolean;
 }) {
   const { data: session } = useSession();
   const [liked, setLiked] = useState(tweet.likedByMe);
@@ -86,11 +89,34 @@ export default function TweetCard({
           </span>
         </div>
 
-        <p className="mt-1 whitespace-pre-wrap break-words text-[15px] leading-snug text-ink">
-          {tweet.content}
-        </p>
+        {linkToDetail ? (
+          <Link href={`/tweet/${tweet.id}`}>
+            <p className="mt-1 whitespace-pre-wrap break-words text-[15px] leading-snug text-ink">
+              {tweet.content}
+            </p>
+          </Link>
+        ) : (
+          <p className="mt-1 whitespace-pre-wrap break-words text-[15px] leading-snug text-ink">
+            {tweet.content}
+          </p>
+        )}
 
         <div className="mt-3 flex items-center gap-5">
+          {linkToDetail ? (
+            <Link
+              href={`/tweet/${tweet.id}`}
+              className="flex items-center gap-1.5 font-mono text-xs tabular-nums text-muted transition-colors hover:text-wire"
+            >
+              <span>💬</span>
+              <span>{tweet.commentCount}</span>
+            </Link>
+          ) : (
+            <span className="flex items-center gap-1.5 font-mono text-xs tabular-nums text-muted">
+              <span>💬</span>
+              <span>{tweet.commentCount}</span>
+            </span>
+          )}
+
           <button
             onClick={toggleLike}
             disabled={!session?.user || busy}

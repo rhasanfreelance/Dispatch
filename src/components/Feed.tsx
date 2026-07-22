@@ -7,7 +7,7 @@ import TweetCard, { TweetData } from "./TweetCard";
 
 export default function Feed() {
   const { data: session, status } = useSession();
-  const [scope, setScope] = useState<"all" | "following">("all");
+  const [scope, setScope] = useState<"foryou" | "following">("foryou");
   const [tweets, setTweets] = useState<TweetData[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,12 +41,12 @@ export default function Feed() {
     <div>
       <div className="flex border-b border-line">
         <button
-          onClick={() => setScope("all")}
+          onClick={() => setScope("foryou")}
           className={`flex-1 py-3 text-center font-mono text-xs uppercase tracking-widest transition-colors ${
-            scope === "all" ? "border-b-2 border-wire text-ink" : "text-muted hover:text-ink"
+            scope === "foryou" ? "border-b-2 border-wire text-ink" : "text-muted hover:text-ink"
           }`}
         >
-          Everyone
+          For You
         </button>
         {status === "authenticated" && (
           <button

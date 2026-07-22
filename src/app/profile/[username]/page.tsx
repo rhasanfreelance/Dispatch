@@ -14,7 +14,7 @@ export default async function ProfilePage({ params }: { params: { username: stri
         orderBy: { createdAt: "desc" },
         include: {
           likes: session?.user?.id ? { where: { userId: session.user.id } } : false,
-          _count: { select: { likes: true } },
+          _count: { select: { likes: true, comments: true } },
         },
       },
       _count: { select: { followers: true, following: true, tweets: true } },
@@ -49,6 +49,7 @@ export default async function ProfilePage({ params }: { params: { username: stri
       createdAt: t.createdAt.toISOString(),
       author: { username: user.username, displayName: user.displayName, avatarSeed: user.avatarSeed },
       likeCount: t._count.likes,
+      commentCount: t._count.comments,
       likedByMe: session?.user?.id ? t.likes.length > 0 : false,
     })),
   };
