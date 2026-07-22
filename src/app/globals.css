@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background-color: #F7F5F0;
+  }
+  body {
+    @apply bg-paper text-ink font-body antialiased;
+  }
+  ::selection {
+    @apply bg-wire text-paper;
+  }
+}
+
+@layer components {
+  .dispatch-rule {
+    @apply border-t border-line;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-wire px-5 py-2 text-sm font-semibold text-paper transition-colors hover:bg-wire-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wire disabled:opacity-40;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-full border border-ink px-5 py-2 text-sm font-semibold text-ink transition-colors hover:bg-ink hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:opacity-40;
+  }
+
+  .field-input {
+    @apply w-full rounded-md border border-line bg-paper px-3 py-2 text-ink placeholder:text-muted focus:border-wire focus:outline-none focus:ring-1 focus:ring-wire;
+  }
+}
