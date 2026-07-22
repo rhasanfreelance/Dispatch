@@ -5,7 +5,7 @@ A minimal Twitter-style app: post short dispatches, like them, follow other acco
 ## Features
 
 - Email/username + password auth (NextAuth credentials provider, bcrypt-hashed passwords)
-- Post dispatches (280 char limit), delete your own
+- Post dispatches (280 char limit), delete your own dispatch
 - Like / unlike
 - Comment on dispatches, with a dedicated thread view, delete your own replies
 - Follow / unfollow
@@ -28,9 +28,11 @@ The "Following" tab stays strictly chronological, matching how Twitter/X splits 
 ## Local setup
 
 1. Install dependencies:
+
    ```
    npm install
    ```
+
    This runs `prisma generate` automatically via `postinstall`.
 
 2. Copy `.env.example` to `.env` and fill in:
@@ -39,6 +41,7 @@ The "Following" tab stays strictly chronological, matching how Twitter/X splits 
    - `NEXTAUTH_URL` — `http://localhost:3000` for local dev
 
 3. Push the schema to your database:
+
    ```
    npx prisma db push
    ```
